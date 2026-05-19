@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  tunnel_local:
+    build: .
+    command: ["python", "src/tunnel_local.py", "--listen", "5001:9001,5002:9002,5003:9999", "--remote-host", "tunnel_remote", "--remote-port", "7000"]
+    ports:
+      - "5001:5001"
+      - "5002:5002"
+      - "5003:5003"
+    depends_on:
+      - tunnel_remote
+    networks:
+      - tunnel_net
+
+  tunnel_remote:
+    build: .
+    command: ["python", "src/tunnel_remote.py", "--listen", "7000", "--services", "9001:time_service,9002:chat_service"]
+    depends_on:
+      - time_service
+      - chat_service
+    networks:
+      - tunnel_net
+
+  time_service:
+    build: .
+    command: ["python", "src/services/time_server.py", "--host", "0.0.0.0", "--port", "9001"]
+    networks:
+      - tunnel_net
+
+  chat_service:
+    build: .
+    command: ["python", "src/services/chat_server.py", "--host", "0.0.0.0", "--port", "9002"]
+    networks:
+      - tunnel_net
+
+networks:
+  tunnel_net:
+    driver: bridge
