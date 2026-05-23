@@ -31,7 +31,7 @@ La inceputul fiecarei conexiuni:
 
 Dupa status OK, se face forward bidirectional al payload-ului.
 
-## Rulare cu Docker (cerinta video)
+## Rulare cu Docker
 
 Pornire:
 ```
@@ -57,6 +57,15 @@ Tratare eroare port invalid (mapat 5003 -> 9999):
 ```
 python src/clients/time_client.py --host 127.0.0.1 --port 5003
 ```
+
+## UI (meniu in terminal)
+
+Pornire UI:
+```
+python run_ui.py
+```
+
+UI-ul poate porni/opri procesele si afiseaza comenzile disponibile. Logurile pentru modul fara Docker sunt scrise in folderul `logs/`.
 
 ## Rulare fara Docker (optional)
 
